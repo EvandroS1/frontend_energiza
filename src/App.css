@@ -1,0 +1,40 @@
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+#root {
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.5;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: none;
+  text-align: center;
+}
+:root {
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+.active:before, .active:after {
+	background: #27AE60;
+	color: white;
+}
+
+input::placeholder {
+  color: #999;
+}
+
+.input-error {
+  outline: none;
+  color: rgb(255, 72, 72)!important;
+transition: all .5s ease-out;
+  border: 1px solid rgb(255, 72, 72) !important;
+  box-shadow: 2px 4px 1px red !important;
+}
+
+.error-message {
+
+position: absolute;
+bottom: -25px;
+left: -1.1rem;
+  color: rgb(255, 72, 72);
+  font-size: 0.75rem;
+  margin-top: 1px;
+}
