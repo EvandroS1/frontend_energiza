@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitErrorHandler, useForm } from "react-hook-form";
 
 import * as style from "./style";
 interface FormData {
@@ -19,7 +19,7 @@ interface FormData {
 }
 
 const Form = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(3);
   const [isOne, setIsOne] = useState(false);
   const [isTwo, setIsTwo] = useState(false);
   const [isThre, setIsThre] = useState(false);
@@ -31,14 +31,14 @@ const Form = () => {
   } = useForm<FormData>();
 
   const watchPassword = watch("senha");
-  console.log(watchPassword);
+  console.log({handleSubmit});
   
 
-  const onSubmit = (data: FormData) => {};
+  // const onSubmit = (data: FormData) => {};
   const onNext = (data: FormData) => {
     // JSON.stringify(data);
-    nextStep();
     console.log(data);
+    nextStep();
   };
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const Form = () => {
       errors?.numero?.type ||
       errors?.complem?.type === "required"
     ) {
-      gsap.to(".error-message", { x: 20, duration: 1 });
+      gsap.to(".error-message", { x: 20, duration: .3 });
     }
   }, [
     errors?.nome,
@@ -98,8 +98,15 @@ const Form = () => {
     errors?.cep,
     errors?.endereco,
     errors?.numero,
-    errors?.complem
+    errors?.complem,
+    watchPassword
   ]);
+
+  const onInvalid: SubmitErrorHandler<FormData> = (errors, e) => {
+    console.log('Erros de validação:', errors);
+    // Faça qualquer coisa com os erros aqui, se necessário
+  };
+  
 
   return (
     <style.FormContainer>
@@ -135,67 +142,69 @@ const Form = () => {
           </style.ProgressBarItem>
         )}
       </style.ProgressBar>
-      <style.StyledFieldset className="1" step={1} currentStep={currentStep}>
-        <style.H2>Crie sua conta 🚀</style.H2>
-        <style.Wrapper>
-          <style.InputWrapper>
-            <style.Input
-              className={errors?.nome && "input-error"}
-              type="text"
-              placeholder="Nome completo"
-              {...register("nome", { required: true })}
-            />
-            {errors?.nome?.type === "required" && (
-              <p className="error-message">Nome é obrigatório.</p>
-            )}
-          </style.InputWrapper>
-          <style.InputWrapper>
-            <style.Input
-              className={errors?.email && "input-error"}
-              type="email"
-              placeholder="Email"
-              {...register("email", { required: true })}
-            />
-            {errors?.email?.type === "required" && (
-              <p className="error-message">Email é obrigatório.</p>
-            )}
-          </style.InputWrapper>
-          <style.InputWrapper>
-            <style.Input
-              className={errors?.senha && "input-error"}
-              type="password"
-              placeholder="Senha"
-              {...register("senha", { required: true })}
-            />
-            {errors?.senha?.type === "required" && (
-              <p className="error-message">Senhha é obrigatório.</p>
-            )}
-          </style.InputWrapper>
-          <style.InputWrapper>
-            <style.Input
-              // style={{ marginBottom: "20px" }}
-
-              className={errors?.senhaConfirm && "input-error"}
-              type="password"
-              placeholder="Confirme a senha"
-              {...register("senhaConfirm", { 
-                required: true,
-                validate: (value) => value === watchPassword, })}
-            />
-            {errors?.senhaConfirm?.type === "required" && (
-              <p className="error-message">Confirme a senha.</p>
-            )}
-            {errors?.senhaConfirm?.type === "validate" && (
-          <p className="error-message">Senhas não conferem.</p>
-        )}
-          </style.InputWrapper>
-        </style.Wrapper>
-        <style.NextButton
-          type="button"
-          onClick={() => handleSubmit(onNext)()}
-          value="Próximo"
-        />
-      </style.StyledFieldset>
+      {/* <style.FormStep> */}
+        <style.StyledFieldset className="1" step={1} currentStep={currentStep}>
+          <style.H2>Crie sua conta 🚀</style.H2>
+          <style.Wrapper>
+            <style.InputWrapper>
+              <style.Input
+                className={errors?.nome && "input-error"}
+                type="text"
+                placeholder="Nome completo"
+                {...register("nome", { required: true })}
+              />
+              {errors?.nome?.type === "required" && (
+                <p className="error-message">Nome é obrigatório.</p>
+              )}
+            </style.InputWrapper>
+            <style.InputWrapper>
+              <style.Input
+                className={errors?.email && "input-error"}
+                type="email"
+                placeholder="Email"
+                {...register("email", { required: true })}
+              />
+              {errors?.email?.type === "required" && (
+                <p className="error-message">Email é obrigatório.</p>
+              )}
+            </style.InputWrapper>
+            <style.InputWrapper>
+              <style.Input
+                className={errors?.senha && "input-error"}
+                type="password"
+                placeholder="Senha"
+                {...register("senha", { required: true })}
+              />
+              {errors?.senha?.type === "required" && (
+                <p className="error-message">Senha é obrigatório.</p>
+              )}
+            </style.InputWrapper>
+            <style.InputWrapper>
+              <style.Input
+                // style={{ marginBottom: "20px" }}
+                className={errors?.senhaConfirm && "input-error"}
+                type="password"
+                placeholder="Confirme a senha"
+                {...register("senhaConfirm", {
+                  required: true,
+                  validate: (value) => value === watchPassword,
+                })}
+              />
+              {errors?.senhaConfirm?.type === "required" && (
+                <p className="error-message">Confirme a senha.</p>
+              )}
+              {errors?.senhaConfirm?.type === "validate" && (
+            <p className="error-message">Senhas não conferem.</p>
+          )}
+            </style.InputWrapper>
+          </style.Wrapper>
+          <style.NextButton
+            type="button"
+            onClick={() => handleSubmit(onNext)()}
+            value="Próximo"
+          />
+        </style.StyledFieldset>
+      {/* </style.FormStep> */}
       <style.StyledFieldset step={2} currentStep={currentStep}>
         <style.H2>Informações da empresa 🏢</style.H2>
         <style.Wrapper>
@@ -238,7 +247,7 @@ const Form = () => {
             <style.PrevButton type="button" onClick={prevStep} value="Voltar" />
             <style.NextButton
               type="submit"
-              onClick={handleSubmit(onNext)}
+              onClick={() => handleSubmit(onNext)()}
               value="Próximo"
             />
           </style.ButtonWrapper>

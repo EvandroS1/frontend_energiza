@@ -1,6 +1,10 @@
 import styled from "styled-components";
 // import css from "../App.css";
 
+export const FormStep = styled.form`
+
+`;
+
 export const FormContainer = styled.form`
   width: 700px;
   height: 600px;
