@@ -7,7 +7,8 @@ export const FormStep = styled.form`
 
 export const FormContainer = styled.form`
   width: 700px;
-  height: 600px;
+  max-height: 1000px;
+  min-height: 600px;
   margin: 50px auto;
   text-align: center;
   position: relative;
@@ -115,8 +116,9 @@ export const StyledFieldset = styled.fieldset<{ step: number; currentStep: numbe
   padding: 20px 30px;
   box-sizing: border-box;
   width: 80%;
-  height: 100%;
+  height: ${(props) => (props.currentStep === 1 ? "650px" : "600px")};
   margin: 0 10%;
+  /* padding-bottom: 10rem; */
   position: absolute;
   pointer-events: ${(props) =>
     props.currentStep === props.step ? "initial" : "none"};
@@ -131,8 +133,10 @@ transition: all 100ms ease-in-out;
 
 export const Label= styled.label`
   display: flex;
-  margin-bottom: 8px;
+  margin-left: 4px;
+  margin-bottom: 2px;
   font-size: 14px;
+  font-weight: 500;
   color: green;
 `;
 
@@ -196,7 +200,7 @@ export const PrevButton = styled.input`
   }
 `;
 
-export const SubmitButton = styled.button`
+export const SubmitButton = styled.input`
   width: 15rem;
   height: 4rem;
   background: #27ae60;

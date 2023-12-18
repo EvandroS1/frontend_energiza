@@ -1,4 +1,5 @@
 export enum ActionTypes {
+  FORM_DATA = '@empresas/FORM_DATA',
   POST_REQUEST = '@empresas/POST_REQUEST',
   POST_FAILURE = '@empresas/POST_FAILURE',
   POST_SUCCESS = '@empresas/POST_SUCCESS',
