@@ -117,8 +117,10 @@ export const StyledFieldset = styled.fieldset<{ step: number; currentStep: numbe
   width: 80%;
   height: 100%;
   margin: 0 10%;
-  position: relative;
-  display: ${(props) => (props.currentStep === props.step ? "block" : "none")};
+  position: absolute;
+  pointer-events: ${(props) =>
+    props.currentStep === props.step ? "initial" : "none"};
+  opacity: ${(props) => (props.currentStep === props.step ? "1" : "0")};
 `;
 export const Wrapper = styled.div`
 transition: all 100ms ease-in-out;
@@ -126,6 +128,14 @@ transition: all 100ms ease-in-out;
   flex-direction: column;
   gap: 1rem;
 `;
+
+export const Label= styled.label`
+  display: flex;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: green;
+`;
+
 
 export const Input = styled.input`
   padding: 20px;

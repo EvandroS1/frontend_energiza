@@ -11,11 +11,12 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
+  overflow-x: hidden;
 }
-.active:before, .active:after {
+/* .active:before, .active:after {
 	background: #27AE60;
 	color: white;
-}
+} */
 
 input::placeholder {
   color: #999;
@@ -37,4 +38,8 @@ left: -1.1rem;
   color: rgb(255, 72, 72);
   font-size: 0.75rem;
   margin-top: 1px;
+}
+
+.active {
+  
 }
