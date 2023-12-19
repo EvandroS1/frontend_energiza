@@ -7,11 +7,11 @@ import * as style from "./style";
 import { useDispatch } from "react-redux";
 import { formData, postRequest } from "../../store/modules/empresas/actions";
 interface FormData {
-  nome: string;
+  nome_Cliente: string;
   email: string;
   senha: string;
   senhaConfirm: string;
-  razaoSocial: string;
+  nome_Empresa: string;
   cnpj: string;
   telefone: string;
   cep: string;
@@ -205,11 +205,11 @@ const Form = () => {
   useEffect(() => {}, [nextStep]);
   useEffect(() => {
     if (
-      errors?.nome?.type ||
+      errors?.nome_Cliente?.type ||
       errors?.email?.type ||
       errors?.senha?.type ||
       errors?.senhaConfirm?.type ||
-      errors?.razaoSocial?.type ||
+      errors?.nome_Empresa?.type ||
       errors?.cnpj?.type ||
       errors?.telefone?.type ||
       errors?.cep?.type ||
@@ -220,11 +220,11 @@ const Form = () => {
       gsap.to(".error-message", { x: 20, duration: 0.3 });
     }
   }, [
-    errors?.nome,
+    errors?.nome_Cliente,
     errors?.email,
     errors?.senha,
     errors?.senhaConfirm,
-    errors?.razaoSocial,
+    errors?.nome_Empresa,
     errors?.cnpj,
     errors?.telefone,
     errors?.cep,
@@ -275,12 +275,12 @@ const Form = () => {
             <style.InputWrapper>
               <style.Label htmlFor="nome_Cliente">Nome completo.</style.Label>
               <style.Input
-                className={errors?.nome && "input-error"}
+                className={errors?.nome_Cliente && "input-error"}
                 type="text"
                 placeholder="Nome completo"
-                {...register("nome", { required: isOne })}
+                {...register("nome_Cliente", { required: isOne })}
               />
-              {errors?.nome?.type === "required" && (
+              {errors?.nome_Cliente?.type === "required" && (
                 <p className="error-message">Nome é obrigatório.</p>
               )}
             </style.InputWrapper>
@@ -338,14 +338,14 @@ const Form = () => {
           <style.H2>Informações da empresa 🏢</style.H2>
           <style.Wrapper>
             <style.InputWrapper>
-              <style.Label htmlFor="razaoSocial">Razão social.</style.Label>
+              <style.Label htmlFor="nome_Empresa">Razão social.</style.Label>
               <style.Input
-                className={errors?.razaoSocial && "input-error"}
+                className={errors?.nome_Empresa && "input-error"}
                 type="text"
                 placeholder="Nome da empresa (Razão Social)"
-                {...register("razaoSocial", { required: isTwo })}
+                {...register("nome_Empresa", { required: isTwo })}
               />
-              {errors?.razaoSocial?.type === "required" && (
+              {errors?.nome_Empresa?.type === "required" && (
                 <p className="error-message">razaoSocial é obrigatório.</p>
               )}
             </style.InputWrapper>
@@ -432,7 +432,7 @@ const Form = () => {
                 className={errors?.complem && "input-error"}
                 type="text"
                 placeholder="Complemento"
-                {...register("complem", { required: isThre })}
+                {...register("complem", { required: false })}
               />
               {errors?.complem?.type === "required" && (
                 <p className="error-message">Complemento é obrigatório.</p>
