@@ -5,9 +5,8 @@ import store from "./store";
 import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import Grid from "./components/Grid/index.tsx";
 import Pagination from "./routes/Pagination.tsx";
-import EditForm from "./components/EditForm/index.tsx";
+import FormEdit from "./routes/FormEdit.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +19,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/edit/:id",
-    element: <EditForm />,
+    element: <FormEdit />,
   }
 ]);
 

@@ -22,8 +22,21 @@ interface FormData {
   privacyTerms: boolean;
 }
 
-const Form: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
+const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [inputValue, setInputValue] = useState<Empresa>({
+  nome_Cliente: empresa.nome_Cliente,
+  email: empresa.email,
+  senha: empresa.senha,
+  senhaConfirm: empresa.senhaConfirm,
+  nome_Empresa: empresa.nome_Empresa,
+  cnpj: empresa.cnpj,
+  telefone: empresa.telefone,
+  cep: empresa.cep,
+  endereco: empresa.endereco,
+  numero: empresa.numero,
+  complem: empresa.complem,
+  });
   const [isOne, setIsOne] = useState(false);
   const [isTwo, setIsTwo] = useState(true);
   const [isThre, setIsThre] = useState(true);
@@ -36,6 +49,14 @@ const Form: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
   const dispatch = useDispatch();
 
   const watchPassword = watch("senha");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
 
   const onSubmit = (data: FormData) => {
     dispatch(postRequest(data));
@@ -203,7 +224,7 @@ const Form: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
   useEffect(() => {}, [nextStep]);
   useEffect(() => {
     if (
-      errors?.nome_Cliente?.type ||
+      errors.nome_Cliente?.type ||
       errors?.email?.type ||
       errors?.senha?.type ||
       errors?.senhaConfirm?.type ||
@@ -231,6 +252,9 @@ const Form: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
     errors?.complem,
     watchPassword,
   ]);
+
+  console.log(inputValue.nome_Cliente?.length);
+  
 
   return (
     <div>
@@ -282,12 +306,17 @@ const Form: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
                 className={errors?.nome_Cliente && "input-error"}
                 type="text"
                 placeholder="Nome completo"
-                value={empresa.nome_Cliente}
+                value={inputValue.nome_Cliente}
                 {...register("nome_Cliente", { required: isOne })}
+                onChange={handleInputChange}
               />
               {errors?.nome_Cliente?.type === "required" && (
                 <p className="error-message">Nome é obrigatório.</p>
               )}
+              {/* {inputValue.nome_Cliente.length < 1 ? (
+                <p className="error-message">Nome é obrigatório.</p>
+              ) : null
+              } */}
             </style.InputWrapper>
             <style.InputWrapper>
               <style.Label htmlFor="email">Email.</style.Label>
@@ -473,4 +502,4 @@ const Form: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
   );
 };
 
-export default Form;
+export default EditForm;
