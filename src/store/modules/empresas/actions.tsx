@@ -6,4 +6,10 @@ export const formData = (data: Empresa) => action(ActionTypes.FORM_DATA, {data})
 
 export const postRequest = (data: Empresa) => action(ActionTypes.POST_REQUEST, {data});
 
-export const postSuccess = (data: Empresa[]) => action(ActionTypes.POST_SUCCESS, {data});
+export const getRequest = () => action(ActionTypes.GET_REQUEST);
+
+export const getSuccess = (data: Empresa[]) => action(ActionTypes.GET_SUCCESS, {data})
+
+export const getFailure = () => action(ActionTypes.GET_FAILURE);
+
+export const deleteRequest = (data: any) => action(ActionTypes.DELETE_REQUEST, {data})

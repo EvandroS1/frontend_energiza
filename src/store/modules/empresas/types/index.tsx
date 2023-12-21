@@ -1,9 +1,10 @@
 export interface Empresa {
-  nome?: string;
+  id?: number;
+  nome_Cliente?: string;
   email?: string;
   senha?: string;
   senhaConfirm?: string;
-  razaoSocial?: string;
+  nome_Empresa?: string;
   cnpj?: string;
   telefone?: string;
   cep?: string;

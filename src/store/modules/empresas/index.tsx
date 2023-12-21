@@ -12,10 +12,12 @@ const reducer: Reducer<EmpresaState> = (state = INNITIAL_STATE, action) => {
   switch (action.type) {
     case ActionTypes.POST_REQUEST:
       return { ...state, loading: true };
-    case ActionTypes.POST_SUCCESS:
-      const payloadData = action.payload as Empresa[];
+    case ActionTypes.GET_REQUEST:
+      return { ...state, loading: true };
+    case ActionTypes.GET_SUCCESS:
+      const payloadData = action.payload;
       return { ...state, loading: false, error: false, data: payloadData };
-    case ActionTypes.POST_FAILURE:
+    case ActionTypes.GET_FAILURE:
       return { ...state, data: [], loading: false, error: true };
 
     default:
