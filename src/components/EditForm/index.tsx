@@ -4,9 +4,13 @@ import gsap from "gsap";
 
 // Importa o CSSRulePlugin
 import * as style from "./style";
-import { useDispatch } from "react-redux";
-import { formData, postRequest } from "../../store/modules/empresas/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { formData, postRequest, updateRequest } from "../../store/modules/empresas/actions";
 import { Empresa } from "../../store/modules/empresas/types";
+import { useParams } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { EmpresasState } from "../../store";
 interface FormData {
   nome_Cliente: string;
   email: string;
@@ -23,12 +27,13 @@ interface FormData {
 }
 
 const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
+  const loading = useSelector((state: EmpresasState) => state.empresa.loading)
+  const error = useSelector((state: EmpresasState) => state.empresa.error)
   const [currentStep, setCurrentStep] = useState(1);
   const [inputValue, setInputValue] = useState<Empresa>({
   nome_Cliente: empresa.nome_Cliente,
   email: empresa.email,
   senha: empresa.senha,
-  senhaConfirm: empresa.senhaConfirm,
   nome_Empresa: empresa.nome_Empresa,
   cnpj: empresa.cnpj,
   telefone: empresa.telefone,
@@ -47,6 +52,7 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
     formState: { errors },
   } = useForm<FormData>();
   const dispatch = useDispatch();
+  const {id} = useParams()
 
   const watchPassword = watch("senha");
 
@@ -58,8 +64,9 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
     });
   };
 
-  const onSubmit = (data: FormData) => {
-    dispatch(postRequest(data));
+  const onSubmit = async (data: FormData) => {
+    await dispatch(updateRequest(data, id));
+    
   };
   const onNext = (data: FormData) => {
     dispatch(formData(data));
@@ -67,21 +74,6 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
   };
 
   useEffect(() => {
-    // if (currentStep === 1) {
-    //   setIsOne(false);
-    //   setIsTwo(false);
-    //   setIsThre(false);
-    // }
-    // if (currentStep === 2) {
-    //   setIsOne(false);
-    //   setIsTwo(false);
-    //   setIsThre(false);
-    // }
-    // if (currentStep === 3) {
-    //   setIsOne(false);
-    //   setIsTwo(false);
-    //   setIsThre(false);
-    // }
     if (currentStep === 1) {
       setIsOne(true); //true
       setIsTwo(false);
@@ -306,8 +298,8 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
                 className={errors?.nome_Cliente && "input-error"}
                 type="text"
                 placeholder="Nome completo"
-                value={inputValue.nome_Cliente}
                 {...register("nome_Cliente", { required: isOne })}
+                value={inputValue.nome_Cliente}
                 onChange={handleInputChange}
               />
               {errors?.nome_Cliente?.type === "required" && (
@@ -385,6 +377,8 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
                 type="text"
                 placeholder="Nome da empresa (Razão Social)"
                 {...register("nome_Empresa", { required: isTwo })}
+                value={inputValue.nome_Empresa}
+                onChange={handleInputChange}
               />
               {errors?.nome_Empresa?.type === "required" && (
                 <p className="error-message">razaoSocial é obrigatório.</p>
@@ -397,6 +391,8 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
                 type="text"
                 placeholder="CNPJ"
                 {...register("cnpj", { required: isTwo })}
+                value={inputValue.cnpj}
+                onChange={handleInputChange}
               />
               {errors?.cnpj?.type === "required" && (
                 <p className="error-message">CNPJ é obrigatório.</p>
@@ -409,6 +405,8 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
                 type="text"
                 placeholder="Telefone"
                 {...register("telefone", { required: isTwo })}
+                value={inputValue.telefone}
+                onChange={handleInputChange}
               />
               {errors?.telefone?.type === "required" && (
                 <p className="error-message">Telefone é obrigatório.</p>
@@ -444,6 +442,8 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
                 type="text"
                 placeholder="cep"
                 {...register("cep", { required: isThre })}
+                value={inputValue.cep}
+                onChange={handleInputChange}
               />
               {errors?.cep?.type === "required" && (
                 <p className="error-message">CEP é obrigatório.</p>
@@ -457,6 +457,8 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
                   type="text"
                   placeholder="Endereço"
                   {...register("endereco", { required: isThre })}
+                  value={inputValue.endereco}
+                onChange={handleInputChange}
                 />
                 {errors?.endereco?.type === "required" && (
                   <p className="error-message">Endereco é obrigatório.</p>
@@ -469,6 +471,8 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
                   type="text"
                   placeholder="Numero"
                   {...register("numero", { required: isThre })}
+                  value={inputValue.numero}
+                onChange={handleInputChange}
                 />
                 {errors?.numero?.type === "required" && (
                   <p className="error-message">Numero é obrigatório.</p>
@@ -482,6 +486,8 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
                 type="text"
                 placeholder="Complemento"
                 {...register("complem", { required: false })}
+                value={inputValue.complem}
+                onChange={handleInputChange}
               />
               {errors?.complem?.type === "required" && (
                 <p className="error-message">Complemento é obrigatório.</p>
@@ -498,6 +504,7 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
           </style.ButtonWrapper>
         </style.StyledFieldset>
       </style.FormContainer>
+      <ToastContainer />
     </div>
   );
 };

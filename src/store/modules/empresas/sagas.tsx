@@ -1,7 +1,8 @@
 import { ActionType } from "typesafe-actions";
-import { deleteRequest, getFailure, getSuccess, postRequest } from "./actions";
+import { deleteRequest, getFailure, getSuccess, postRequest, updateRequest } from "./actions";
 import { call, put } from "redux-saga/effects";
 import { api } from "../../../utils/api";
+import { toast } from "react-toastify";
 // import { useDispatch } from "react-redux";
 
 export function* post(action: ActionType<typeof postRequest>): any {
@@ -10,7 +11,44 @@ export function* post(action: ActionType<typeof postRequest>): any {
     
     // Enviar dados como parte do corpo da requisição POST
     const response = yield call(api.post, "", data);
+    toast.promise(
+      response,
+      {
+        pending: 'Promise is pending',
+        success: 'Promise resolved 👌',
+        error: 'Promise rejected 🤯'
+      }
+  )
     console.log("foi:", response);
+    
+    // Faça algo com a resposta, se necessário
+  } catch (error) {
+    // Lidar com erros, se houver algum
+    console.log("erro:", error);
+  }
+}
+export function* update(action: ActionType<typeof updateRequest>): any {
+  try {
+    const data = {...action.payload.data};
+    const id = action.payload.id;
+    if ('senhaConfirm' in data) {
+      delete data.senhaConfirm;
+    }
+    // if ('complem' in data) {
+    //   delete data.complem;
+    // }
+    // console.log(data);
+    
+    // Enviar dados como parte do corpo da requisição POST
+    yield toast.promise(
+    api.put(`/?id=${id}`, data),
+    // console.log("foi:", response);
+      {
+        pending: 'Promise is pending',
+        success: 'Promise resolved 👌',
+        error: 'Promise rejected 🤯'
+      }
+  )
     
     // Faça algo com a resposta, se necessário
   } catch (error) {

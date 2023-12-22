@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { EmpresasState } from "../../store";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import { deleteRequest, getRequest } from "../../store/modules/empresas/actions";
 import GridLines from "../GridLines";
 import * as style from './style'
@@ -11,6 +12,7 @@ const Grid = () => {
   const empresas = useSelector((state: EmpresasState) => state.empresa.data.data);
   const dispatch = useDispatch();
   const [data, setData] = useState<Empresa[]>([]);
+  const push = useNavigate()
 
   console.log(empresas);
 
@@ -29,7 +31,7 @@ const Grid = () => {
     dispatch(deleteRequest(data))
   }
   const  handleEditar = (data: any) => {
-    console.log(data);
+    push(`/edit/${data}`);
     
   }
 
@@ -44,7 +46,6 @@ const Grid = () => {
             <style.TableHead>
               <style.TableHeadRow>
                 <style.TableHeadCell>Nome</style.TableHeadCell>
-                <style.TableHeadCell>Senha</style.TableHeadCell>
                 <style.TableHeadCell>Empresa</style.TableHeadCell>
                 <style.TableHeadCell>CNPJ</style.TableHeadCell>
                 <style.TableHeadCell>CEP</style.TableHeadCell>
@@ -52,6 +53,7 @@ const Grid = () => {
                 <style.TableHeadCell>Numero</style.TableHeadCell>
                 <style.TableHeadCell>Telefone</style.TableHeadCell>
                 <style.TableHeadCell>Email</style.TableHeadCell>
+                <style.TableHeadCell>Complemento</style.TableHeadCell>
                 <style.TableHeadCell>Editar</style.TableHeadCell>
                 <style.TableHeadCell>Excluir</style.TableHeadCell>
               </style.TableHeadRow>
@@ -59,15 +61,15 @@ const Grid = () => {
             <tbody>
         <style.TableRow>
           <style.TableCell>{empresa.nome_Cliente}</style.TableCell>
-          <style.TableCell>{empresa.senha}</style.TableCell>
           <style.TableCell>{empresa.nome_Empresa}</style.TableCell>
           <style.TableCell>{empresa.cnpj ? empresa.cnpj : ""}</style.TableCell>
           <style.TableCell>{empresa.cep}</style.TableCell>
           <style.TableCell>{empresa.endereco}</style.TableCell>
-          <style.TableCell>{empresa.numero}</style.TableCell>
+          <style.TableCell>{empresa.numero? empresa.numero : "null"}</style.TableCell>
           <style.TableCell>{empresa.telefone}</style.TableCell>
           <style.TableCell>{empresa.email}</style.TableCell>
-          <style.TableCell><style.EditButton onClick={() => handleEditar(empresa.cnpj)}>Editar</style.EditButton></style.TableCell>
+          <style.TableCell>{empresa.complem}</style.TableCell>
+          <style.TableCell><style.EditButton onClick={() => handleEditar(empresa.id)}>Editar</style.EditButton></style.TableCell>
           <style.TableCell><style.ExcluirButton onClick={() => handleExcluir(empresa.id)}>Excluir</style.ExcluirButton></style.TableCell>
       
         </style.TableRow>

@@ -9,6 +9,9 @@ export enum ActionTypes {
   DELETE_REQUEST = '@empresas/DELETE_REQUEST',
   DELETE_SUCCESS = '@empresas/DELETE_SUCCESS',
   DELETE_FAILURE = '@empresas/DELETE_FAILURE',
+  UPDATE_REQUEST = '@empresas/UPDATE_REQUEST',
+  UPDATE_SUCCESS = '@empresas/UPDATE_SUCCESS',
+  UPDATE_FAILURE = '@empresas/UPDATE_FAILURE',
   LOAD_REQUEST = '@empresas/LOAD_REQUEST',
   LOAD_SUCCESS = '@empresas/LOAD_SUCCESS',
 }
