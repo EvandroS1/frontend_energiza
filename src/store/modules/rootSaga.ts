@@ -1,6 +1,6 @@
 import { all, takeLatest } from "redux-saga/effects";
 import { ActionTypes } from "./empresas/actionTypes";
-import { post, get, deleteByCnpj, update } from "./empresas/sagas";
+import { post, get, deleteByCnpj, update, search } from "./empresas/sagas";
 
 export default function* rootSaga(): any {
   return yield all([
@@ -8,5 +8,6 @@ export default function* rootSaga(): any {
     takeLatest(ActionTypes.GET_REQUEST, get),
     takeLatest(ActionTypes.DELETE_REQUEST, deleteByCnpj),
     takeLatest(ActionTypes.UPDATE_REQUEST, update),
+    takeLatest(ActionTypes.SEARCH_REQUEST, search),
   ])
 }

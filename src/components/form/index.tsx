@@ -6,6 +6,10 @@ import gsap from "gsap";
 import * as style from "./style";
 import { useDispatch } from "react-redux";
 import { formData, postRequest } from "../../store/modules/empresas/actions";
+import { useSelector } from "react-redux";
+import { EmpresasState } from "../../store";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router";
 interface FormData {
   nome_Cliente: string;
   email: string;
@@ -22,6 +26,7 @@ interface FormData {
 }
 
 const Form = () => {
+  const loading = useSelector((state: EmpresasState) => state.empresa.loading)
   const [currentStep, setCurrentStep] = useState(1);
   const [isOne, setIsOne] = useState(false);
   const [isTwo, setIsTwo] = useState(true);
@@ -33,33 +38,39 @@ const Form = () => {
     formState: { errors },
   } = useForm<FormData>();
   const dispatch = useDispatch();
+  const push = useNavigate()
 
   const watchPassword = watch("senha");
   
   const onSubmit = (data: FormData) => {
+    // if(loading ? (toast.info('Aqui vai uma informação importante.')) : (
+    //   toast.success('Operação realizada com sucesso!')
+    // ))
     dispatch(postRequest(data));
+    setTimeout(() => {
+      push('/pagination')
+    }, 6000);
+    
   };
   const onNext = (data: FormData) => {
     dispatch(formData(data));
     nextStep();
   };
+  const formatarCNPJ = (input: any) => {
+    console.log(input);
+    
+    var cnpj = input.value.replace(/\D/g, '');
 
+    // Adiciona a máscara
+    cnpj = cnpj.replace(/^(\d{2})(\d)/, '$1.$2');
+    cnpj = cnpj.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+    cnpj = cnpj.replace(/\.(\d{3})(\d)/, '.$1/$2');
+    cnpj = cnpj.replace(/(\d{4})(\d)/, '$1-$2');
+
+    // Atualiza o valor do input
+    input.value = cnpj;
+  }
   useEffect(() => {
-    // if (currentStep === 1) {
-    //   setIsOne(false);
-    //   setIsTwo(false);
-    //   setIsThre(false);
-    // }
-    // if (currentStep === 2) {
-    //   setIsOne(false);
-    //   setIsTwo(false);
-    //   setIsThre(false);
-    // }
-    // if (currentStep === 3) {
-    //   setIsOne(false);
-    //   setIsTwo(false);
-    //   setIsThre(false);
-    // }
     if (currentStep === 1) {
       setIsOne(true); //true
       setIsTwo(false);
@@ -78,8 +89,6 @@ const Form = () => {
   }, [currentStep]);
 
   const nextStep = () => {
-    // gsap.to(".1", { rotation: 27, x: 100, duration: 1 });
-    // console.log('sla');
     if (currentStep === 1) {
       gsap.fromTo(
         ".one",
@@ -356,6 +365,7 @@ const Form = () => {
                 type="text"
                 placeholder="CNPJ"
                 {...register("cnpj", { required: isTwo })}
+                onInput={() => formatarCNPJ(this)}
               />
               {errors?.cnpj?.type === "required" && (
                 <p className="error-message">CNPJ é obrigatório.</p>
@@ -445,6 +455,8 @@ const Form = () => {
           </style.ButtonWrapper>
         </style.StyledFieldset>
       </style.FormContainer>
+      <ToastContainer />
+
     </div>
   );
 };

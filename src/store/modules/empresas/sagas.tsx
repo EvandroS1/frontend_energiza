@@ -1,25 +1,26 @@
 import { ActionType } from "typesafe-actions";
-import { deleteRequest, getFailure, getSuccess, postRequest, updateRequest } from "./actions";
+import { deleteRequest, getFailure, getSuccess, postRequest, searchFailure, searchRequest, searchSuccess, updateRequest } from "./actions";
 import { call, put } from "redux-saga/effects";
 import { api } from "../../../utils/api";
 import { toast } from "react-toastify";
-// import { useDispatch } from "react-redux";
 
 export function* post(action: ActionType<typeof postRequest>): any {
   try {
     const data = action.payload.data;
     
     // Enviar dados como parte do corpo da requisição POST
-    const response = yield call(api.post, "", data);
-    toast.promise(
-      response,
+    yield toast.promise(
+      api.post("", data),
+      // console.log("foi:", response);
       {
-        pending: 'Promise is pending',
-        success: 'Promise resolved 👌',
-        error: 'Promise rejected 🤯'
-      }
-  )
-    console.log("foi:", response);
+        pending: 'Enviando...',
+        success: 'Cadastro atualizado 👌',
+        error: 'Erro ao atualizar 🤯',
+        // Após o Toast ser fechado, você pode redirecionar
+        
+      },
+      // {onClose: () => push('/pagination')}
+      )
     
     // Faça algo com a resposta, se necessário
   } catch (error) {
@@ -43,12 +44,15 @@ export function* update(action: ActionType<typeof updateRequest>): any {
     yield toast.promise(
     api.put(`/?id=${id}`, data),
     // console.log("foi:", response);
-      {
-        pending: 'Promise is pending',
-        success: 'Promise resolved 👌',
-        error: 'Promise rejected 🤯'
-      }
-  )
+    {
+      pending: 'Enviando...',
+      success: 'Cadastro atualizado 👌',
+      error: 'Erro ao atualizar 🤯',
+      // Após o Toast ser fechado, você pode redirecionar
+      
+    },
+    // {onClose: () => push('/pagination')}
+    )
     
     // Faça algo com a resposta, se necessário
   } catch (error) {
@@ -78,5 +82,20 @@ export function* deleteByCnpj(action: ActionType<typeof deleteRequest>): any {
     
   } catch (error) {
     console.log("Erro ao excluir usuario", error);
+  }
+}
+export function* search(action: ActionType<typeof searchRequest>): any {
+  const cnpj = action.payload.data
+  console.log(cnpj);
+  
+  try {
+    const response = yield call(api.get,`/getByCnpj/?cnpj=${cnpj}`);
+    const data = response.data
+    yield put(getSuccess(data));
+    // console.log("Usuario encontrado", data);
+    
+  } catch (error) {
+    yield put(searchFailure());
+    console.log("Erro ao encontrar usuario", error);
   }
 }

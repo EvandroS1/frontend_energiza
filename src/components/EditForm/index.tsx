@@ -7,7 +7,7 @@ import * as style from "./style";
 import { useDispatch, useSelector } from "react-redux";
 import { formData, postRequest, updateRequest } from "../../store/modules/empresas/actions";
 import { Empresa } from "../../store/modules/empresas/types";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { EmpresasState } from "../../store";
@@ -29,6 +29,7 @@ interface FormData {
 const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
   const loading = useSelector((state: EmpresasState) => state.empresa.loading)
   const error = useSelector((state: EmpresasState) => state.empresa.error)
+  const push = useNavigate()
   const [currentStep, setCurrentStep] = useState(1);
   const [inputValue, setInputValue] = useState<Empresa>({
   nome_Cliente: empresa.nome_Cliente,
@@ -64,9 +65,14 @@ const EditForm: React.FC<{ empresa: Empresa }> = ({ empresa }) => {
     });
   };
 
-  const onSubmit = async (data: FormData) => {
-    await dispatch(updateRequest(data, id));
+  const onSubmit = (data: FormData) => {
+    dispatch(updateRequest(data, id));
+    console.log('foi');
     
+    setTimeout(() => {
+      push('/pagination')
+    }, 6000);
+
   };
   const onNext = (data: FormData) => {
     dispatch(formData(data));

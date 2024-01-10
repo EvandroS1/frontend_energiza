@@ -1,11 +1,13 @@
-import { useSelector } from "react-redux";
 import Grid from "../components/Grid";
-import { EmpresasState } from "../store";
+import Nav from "../components/Nav";
 
 const Pagination = (): any => {
-  const empresas = useSelector((state: EmpresasState) => state.empresa.data);
-  const data = empresas;
-  return <Grid />;
+  // const empresas = useSelector((state: EmpresasState) => state.empresa.data);
+  // const data = empresas;
+  return <div>
+    <Nav />
+    <Grid />
+    </div>
 };
 
 export default Pagination;

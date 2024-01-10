@@ -19,3 +19,9 @@ export const getSuccess = (data: Empresa[]) => action(ActionTypes.GET_SUCCESS, {
 export const getFailure = () => action(ActionTypes.GET_FAILURE);
 
 export const deleteRequest = (data: any) => action(ActionTypes.DELETE_REQUEST, {data})
+
+export const searchRequest = (data: string) => action(ActionTypes.SEARCH_REQUEST, {data})
+
+export const searchSuccess = (data: [Empresa]) => action(ActionTypes.SEARCH_SUCCESS, {data})
+
+export const searchFailure = () => action(ActionTypes.SEARCH_FAILURE);

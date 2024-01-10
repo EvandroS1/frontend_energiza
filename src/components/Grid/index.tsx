@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { deleteRequest, getRequest } from "../../store/modules/empresas/actions";
-import GridLines from "../GridLines";
 import * as style from './style'
 import { Empresa } from "../../store/modules/empresas/types";
 
@@ -14,8 +13,6 @@ const Grid = () => {
   const [data, setData] = useState<Empresa[]>([]);
   const push = useNavigate()
 
-  console.log(empresas);
-
   useEffect(() => {
     dispatch(getRequest());
   }, []);
@@ -24,11 +21,20 @@ const Grid = () => {
     // Certifique-se de que empresas é um array antes de atribuir a data
     if (Array.isArray(empresas)) {
       setData(empresas);
-    }
+    } 
   }, [empresas]);
+  // useEffect(() => {
+  //   const search = [empresas]
+  //   if(data.length === 1) {
+  //     setData(search);
+  //   console.log('data',search);}
+
+  // }, [empresas]);
+  
   
   const  handleExcluir = (data: any) => {
     dispatch(deleteRequest(data))
+      location.reload()
   }
   const  handleEditar = (data: any) => {
     push(`/edit/${data}`);
@@ -37,45 +43,46 @@ const Grid = () => {
 
   return (
     <div>
-      <h1>TOTAL:{data.length}</h1>   
+      <h1>{data.length}</h1>   
       <style.BigWrapper className="">
         <style.Wrapper>
-          {data.map((empresa) => (
-            // <GridLines key={empresa.id} empresa={empresa} />
             <style.Table>
             <style.TableHead>
               <style.TableHeadRow>
                 <style.TableHeadCell>Nome</style.TableHeadCell>
                 <style.TableHeadCell>Empresa</style.TableHeadCell>
-                <style.TableHeadCell>CNPJ</style.TableHeadCell>
-                <style.TableHeadCell>CEP</style.TableHeadCell>
+                <style.TableHeadCell style={{'width': '140px'}}>CNPJ</style.TableHeadCell>
+                <style.TableHeadCell style={{'width': '100px'}}>CEP</style.TableHeadCell>
                 <style.TableHeadCell>Endereço</style.TableHeadCell>
-                <style.TableHeadCell>Numero</style.TableHeadCell>
-                <style.TableHeadCell>Telefone</style.TableHeadCell>
+                <style.TableHeadCell style={{'width': '100px'}}>Numero</style.TableHeadCell>
+                <style.TableHeadCell style={{'width': '100px'}}>Telefone</style.TableHeadCell>
                 <style.TableHeadCell>Email</style.TableHeadCell>
-                <style.TableHeadCell>Complemento</style.TableHeadCell>
-                <style.TableHeadCell>Editar</style.TableHeadCell>
-                <style.TableHeadCell>Excluir</style.TableHeadCell>
+                <style.TableHeadCell style={{'width': '100px'}}>Complemento</style.TableHeadCell>
+                <style.TableHeadCell style={{'width': '100px'}}>Editar</style.TableHeadCell>
+                <style.TableHeadCell style={{'width': '100px'}}>Excluir</style.TableHeadCell>
               </style.TableHeadRow>
             </style.TableHead>
+          {data.map((empresa) => (
             <tbody>
         <style.TableRow>
+<>
           <style.TableCell>{empresa.nome_Cliente}</style.TableCell>
           <style.TableCell>{empresa.nome_Empresa}</style.TableCell>
-          <style.TableCell>{empresa.cnpj ? empresa.cnpj : ""}</style.TableCell>
-          <style.TableCell>{empresa.cep}</style.TableCell>
+          <style.TableCell style={{'width': '140px'}}>{empresa.cnpj ? empresa.cnpj : ""}</style.TableCell>
+          <style.TableCell style={{'width': '100px'}}>{empresa.cep}</style.TableCell>
           <style.TableCell>{empresa.endereco}</style.TableCell>
-          <style.TableCell>{empresa.numero? empresa.numero : "null"}</style.TableCell>
-          <style.TableCell>{empresa.telefone}</style.TableCell>
+          <style.TableCell style={{'width': '100px'}}>{empresa.numero? empresa.numero : "null"}</style.TableCell>
+          <style.TableCell style={{'width': '100px'}}>{empresa.telefone}</style.TableCell>
           <style.TableCell>{empresa.email}</style.TableCell>
-          <style.TableCell>{empresa.complem}</style.TableCell>
-          <style.TableCell><style.EditButton onClick={() => handleEditar(empresa.id)}>Editar</style.EditButton></style.TableCell>
-          <style.TableCell><style.ExcluirButton onClick={() => handleExcluir(empresa.id)}>Excluir</style.ExcluirButton></style.TableCell>
+          <style.TableCell style={{'width': '100px'}}> {empresa.complem}</style.TableCell>
+          <style.TableCell style={{'width': '100px'}}><style.EditButton onClick={() => handleEditar(empresa.id)}>Editar</style.EditButton></style.TableCell>
+          <style.TableCell style={{'width': '100px'}}><style.ExcluirButton onClick={() => handleExcluir(empresa.id)}>Excluir</style.ExcluirButton></style.TableCell>
+          </>
       
         </style.TableRow>
             </tbody>
-          </style.Table>
           ))}
+            </style.Table>
         </style.Wrapper>
       </style.BigWrapper>
       
