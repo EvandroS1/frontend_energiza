@@ -8,7 +8,10 @@ import * as style from './style'
 import { Empresa } from "../../store/modules/empresas/types";
 
 const Grid = () => {
-  const empresas = useSelector((state: EmpresasState) => state.empresa.data.data);
+  const empresas = useSelector((state: EmpresasState) => state.empresa.data);
+  console.log('log do grid', empresas);
+
+  
   const dispatch = useDispatch();
   const [data, setData] = useState<Empresa[]>([]);
   const push = useNavigate()
@@ -63,7 +66,7 @@ const Grid = () => {
               </style.TableHeadRow>
             </style.TableHead>
           {data.map((empresa) => (
-            <tbody>
+            <tbody key={empresa.id}>
         <style.TableRow>
 <>
           <style.TableCell>{empresa.nome_Cliente}</style.TableCell>

@@ -1,5 +1,5 @@
 import { ActionType } from "typesafe-actions";
-import { deleteRequest, getFailure, getSuccess, postRequest, searchFailure, searchRequest, searchSuccess, updateRequest } from "./actions";
+import { deleteRequest, getFailure, getSuccess, postRequest, searchFailure, searchRequest, updateRequest } from "./actions";
 import { call, put } from "redux-saga/effects";
 import { api } from "../../../utils/api";
 import { toast } from "react-toastify";
@@ -64,7 +64,7 @@ export function* update(action: ActionType<typeof updateRequest>): any {
 export function* get(): any {
   try {
     const response = yield call(api.get, "");
-    const data = response.data.users
+    const data = response.data
     console.log("get", data);
 
     yield put(getSuccess(data));

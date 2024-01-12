@@ -14,7 +14,7 @@ export const updateFailure = () => action(ActionTypes.UPDATE_FAILURE);
 
 export const getRequest = () => action(ActionTypes.GET_REQUEST);
 
-export const getSuccess = (data: Empresa[]) => action(ActionTypes.GET_SUCCESS, {data})
+export const getSuccess = (data: Empresa[]) => action(ActionTypes.GET_SUCCESS, data) 
 
 export const getFailure = () => action(ActionTypes.GET_FAILURE);
 
